@@ -3,7 +3,7 @@ import test = require('tape');
 import {Cache} from '../../src';
 
 export function cacheSuite(
-    cacheClass: { new<T>(): Cache<T> },
+    cacheClass: new<T>() => Cache<T>,
     expected: <T>(testCase: T[]) => T[],
 ) {
     const cacheName = (cacheClass as any).name;

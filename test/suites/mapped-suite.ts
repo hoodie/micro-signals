@@ -28,7 +28,7 @@ export function mappedSuite(prefix: string, createMappedSignal: MappedSignalCrea
         baseSignal.dispatch(0);
         baseSignal.dispatch(100);
 
-        t.deepEqual(addResults, [-50, 0, -100]);
+        t.deepEqual(addResults, [-50, -0, -100]);
         t.deepEqual(addOnceResults, [-50]);
 
         t.end();
