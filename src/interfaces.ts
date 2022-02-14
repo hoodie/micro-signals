@@ -20,6 +20,7 @@ export interface ReadableSignal<T> extends BaseSignal<T> {
 
 export interface WritableSignal<T> {
     dispatch: (payload: T) => void;
+    dispatchLowPriority: (payload: T) => void;
     /**
      * set a listener to be called if no other listeners are available.
      */

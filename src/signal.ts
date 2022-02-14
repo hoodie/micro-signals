@@ -34,6 +34,16 @@ export class Signal<T> extends ExtendedSignal<T> implements WritableSignal<T>, R
         this._listeners.forEach(callback => callback.call(undefined, payload));
     }
 
+    public dispatchLowPriority(payload: T): void {
+        if (this._listeners.size === 0) {
+            const instanceDefaultListener = this._instanceDefaultListener;
+            instanceDefaultListener(payload);
+            return;
+        }
+
+        this._listeners.forEach(callback => callback.call(undefined, payload));
+    }
+
     public setDefaultListener(listener: Listener<T>) {
         this._instanceDefaultListener = listener;
     }
