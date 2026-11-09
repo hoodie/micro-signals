@@ -1,14 +1,14 @@
-import test from 'tape';
+import test from '../lib/test.ts';
 
-import { Accumulator, ReadableSignal, Signal } from '../../src/index.js';
-import { LeakDetectionSignal } from '../lib/leak-detection-signal.js';
+import { Accumulator, ReadableSignal, Signal } from '../../src/index.ts';
+import { LeakDetectionSignal } from '../lib/leak-detection-signal.ts';
 
-import { parentChildSuite } from './parent-child-suite.js';
+import { parentChildSuite } from './parent-child-suite.ts';
 
 export type ReducedSignalCreationFunction = <T, U>(
     baseSignal: ReadableSignal<T>,
     accumulator: Accumulator<T, U>,
-    initialValue: U
+    initialValue: U,
 ) => ReadableSignal<U>;
 
 export function reducedSuite(prefix: string, createReducedSignal: ReducedSignalCreationFunction) {

@@ -1,5 +1,5 @@
-import { ReadableSignal } from './interfaces.js';
-import { Signal } from './signal.js';
+import { ReadableSignal } from './interfaces.ts';
+import { Signal } from './signal.ts';
 
 /**
  * Create a Signal that dispatches after a certain timeout.

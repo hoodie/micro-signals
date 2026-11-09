@@ -1,13 +1,13 @@
-import test from 'tape';
+import test from '../lib/test.ts';
 
-import { ReadableSignal, Signal } from '../../src/index.js';
-import { LeakDetectionSignal } from '../lib/leak-detection-signal.js';
+import { ReadableSignal, Signal } from '../../src/index.ts';
+import { LeakDetectionSignal } from '../lib/leak-detection-signal.ts';
 
-import { parentChildSuite } from './parent-child-suite.js';
+import { parentChildSuite } from './parent-child-suite.ts';
 
 export type PeekedSignalCreationFunction = <T>(
     baseSignal: ReadableSignal<T>,
-    peekaboo: (payload: T) => void
+    peekaboo: (payload: T) => void,
 ) => ReadableSignal<T>;
 export function peekedSuite(prefix: string, createPeekedSignal: PeekedSignalCreationFunction) {
     parentChildSuite(prefix, () => {

@@ -1,8 +1,8 @@
-import test from 'tape';
+import test from '../lib/test.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-shadow
-import { Cache } from '../../src/index.js';
-import { LeakDetectionSignal } from '../lib/leak-detection-signal.js';
+import { Cache } from '../../src/index.ts';
+import { LeakDetectionSignal } from '../lib/leak-detection-signal.ts';
 
 export function cacheSuite(cacheClass: { <T>(): Cache<T> }, expected: <T>(testCase: T[]) => T[]) {
     const cacheName = cacheClass.name;

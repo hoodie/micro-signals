@@ -1,18 +1,18 @@
-import test from 'tape';
+import test from "../lib/test.ts";
 
-import { ReadableSignal, Signal } from '../../src/index.js';
-import { LeakDetectionSignal } from '../lib/leak-detection-signal.js';
+import { ReadableSignal, Signal } from "../../src/index.ts";
+import { LeakDetectionSignal } from "../lib/leak-detection-signal.ts";
 
-import { parentChildSuite } from './parent-child-suite.js';
+import { parentChildSuite } from "./parent-child-suite.ts";
 
 export type FilteredSignalCreationFunction = <T>(
     baseSignal: ReadableSignal<T>,
-    filter: (payload: T) => boolean
+    filter: (payload: T) => boolean,
 ) => ReadableSignal<T>;
 
 export function filteredSuite(
     prefix: string,
-    createFilteredSignal: FilteredSignalCreationFunction
+    createFilteredSignal: FilteredSignalCreationFunction,
 ) {
     parentChildSuite(prefix, () => {
         const parentSignal = new Signal();

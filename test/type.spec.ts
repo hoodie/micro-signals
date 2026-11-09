@@ -2,7 +2,7 @@
  * this should only compile
  */
 
-import { CollectionCache, ReadableSignal, Signal, ValueCache } from '../src/index.js';
+import { CollectionCache, ReadableSignal, Signal, ValueCache } from '../src/index.ts';
 
 // hover over merged1-4 and verify that they have the same types as described in the comments above
 const signalNumber = new Signal<number>();
@@ -31,7 +31,7 @@ const merged2 = cachedSignalNumber.merge(signalString);
 // CachedSignal<string | number, ValueCache<number>>
 const merged3 = cachedSignalNumber.merge<string | number>(
     readableSignalString,
-    readableSignalNumber
+    readableSignalNumber,
 );
 
 // CachedSignal<string | number, ValueCache<number>>

@@ -1,10 +1,9 @@
-import test from 'tape';
+import test from './lib/test.ts';
 
-import { CapacityCollectionCache, GroupingCache } from '../src/caches.js';
-// eslint-disable-next-line @typescript-eslint/no-shadow
-import { Cache, CollectionCache, Signal, ValueCache } from '../src/index.js';
+import { CapacityCollectionCache, GroupingCache } from '../src/caches.ts';
+import { Cache, CollectionCache, Signal, ValueCache } from '../src/index.ts';
 
-import { cacheSuite } from './suites/cache-suite.js';
+import { cacheSuite } from './suites/cache-suite.ts';
 
 // testValues should contain at least 4 items as some tests expect to slice at certain points
 const testValues = Object.freeze([0, 2, 4, Infinity, 1, -4, 49, 0]);
@@ -256,21 +255,21 @@ test(`cache is cleared with the signal`, (t) => {
 
 cacheSuite(
     () => new ValueCache(),
-    (arr) => arr.slice(-1)
+    (arr) => arr.slice(-1),
 );
 
 cacheSuite(
     () => new CollectionCache(),
-    (arr) => arr
+    (arr) => arr,
 );
 
 cacheSuite(
     () => new CapacityCollectionCache(100),
-    (arr) => arr
+    (arr) => arr,
 );
 
 cacheSuite(
     // FIXME: NOOO!
     () => new GroupingCache((_payload) => Math.random() as any),
-    (arr) => arr
+    (arr) => arr,
 );

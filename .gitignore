@@ -5,5 +5,7 @@
 /coverage/
 npm-debug.log*
 .vscode
-.eslintcache
 *.tsbuildinfo
+docs
+lib
+node_modules

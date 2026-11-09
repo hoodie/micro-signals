@@ -1,6 +1,6 @@
-import test from 'tape';
+import test from './lib/test.ts';
 
-import { LeakDetectionSignal } from './lib/leak-detection-signal.js';
+import { LeakDetectionSignal } from './lib/leak-detection-signal.ts';
 
 test('extended signal should provide correct listener count', (t) => {
     const signal = new LeakDetectionSignal();
@@ -31,4 +31,3 @@ test('extended signal should provide correct listener count', (t) => {
     t.equal(signal.listenerCount, 0);
     t.end();
 });
-

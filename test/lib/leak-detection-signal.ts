@@ -4,9 +4,7 @@
  * using these extended signal types.
  */
 
-import {
-    Signal as BaseSignal,
-} from '../../src/index.js';
+import { Signal as BaseSignal } from '../../src/index.ts';
 
 export class LeakDetectionSignal<T> extends BaseSignal<T> {
     get listenerCount(): number {

@@ -1,62 +1,68 @@
-import test from 'tape';
+import assert from 'node:assert/strict';
 
-import { Signal } from '../src/index.js';
+import { Signal } from '../src/index.ts';
+import test from './lib/test.ts';
 
-test('Signal removing an added listener by tags should work after a dispatch', (t) => {
-    const receivedPayloads: string[] = [];
+const assertEquals: (actual: unknown, expected: unknown) => void = assert.deepStrictEqual;
 
-    const signal = new Signal<string>();
+test(
+    'Signal removing an added listener by tags should work after a dispatch',
+    () => {
+        const receivedPayloads: string[] = [];
 
-    const tag = {};
+        const signal = new Signal<string>();
 
-    signal.add((payload) => receivedPayloads.push(payload), tag);
+        const tag = {};
 
-    signal.dispatch('a');
-    signal.remove(tag);
-    signal.dispatch('b');
+        signal.add((payload) => receivedPayloads.push(payload), tag);
 
-    t.deepEqual(receivedPayloads, ['a']);
+        signal.dispatch('a');
+        signal.remove(tag);
+        signal.dispatch('b');
 
-    t.end();
-});
+        assertEquals(receivedPayloads, ['a']);
+    },
+);
 
-test('Signal removing an added listener by tags should work before any dispatches', (t) => {
-    const receivedPayloads: string[] = [];
+test(
+    'Signal removing an added listener by tags should work before any dispatches',
+    () => {
+        const receivedPayloads: string[] = [];
 
-    const signal = new Signal<string>();
+        const signal = new Signal<string>();
 
-    const tag = {};
+        const tag = {};
 
-    signal.add((payload) => receivedPayloads.push(payload), tag);
+        signal.add((payload) => receivedPayloads.push(payload), tag);
 
-    signal.remove(tag);
-    signal.dispatch('a');
-    signal.dispatch('b');
+        signal.remove(tag);
+        signal.dispatch('a');
+        signal.dispatch('b');
 
-    t.deepEqual(receivedPayloads, []);
+        assertEquals(receivedPayloads, []);
+    },
+);
 
-    t.end();
-});
+test(
+    'Signal removing an added once listener by tags should stop further updates',
+    () => {
+        const receivedPayloads: string[] = [];
 
-test('Signal removing an added once listener by tags should stop further updates', (t) => {
-    const receivedPayloads: string[] = [];
+        const signal = new Signal<string>();
 
-    const signal = new Signal<string>();
+        const tag = {};
 
-    const tag = {};
+        signal.addOnce((payload) => receivedPayloads.push(payload), tag);
 
-    signal.addOnce((payload) => receivedPayloads.push(payload), tag);
+        signal.remove(tag);
+        signal.dispatch('a');
+        signal.dispatch('b');
 
-    signal.remove(tag);
-    signal.dispatch('a');
-    signal.dispatch('b');
+        assertEquals(receivedPayloads, []);
+    },
+);
 
-    t.deepEqual(receivedPayloads, []);
-
-    t.end();
-});
-
-test('Signal should support multiple tags per added listener', (t) => {
+test('Signal should support multiple tags per added listener', () => {
     const receivedPayloads: string[] = [];
 
     const signal = new Signal<string>();
@@ -71,12 +77,10 @@ test('Signal should support multiple tags per added listener', (t) => {
     signal.remove(tag3);
     signal.dispatch('b');
 
-    t.deepEqual(receivedPayloads, ['a']);
-
-    t.end();
+    assertEquals(receivedPayloads, ['a']);
 });
 
-test('Signal should support multiple listener per tag', (t) => {
+test('Signal should support multiple listener per tag', () => {
     const receivedPayloads1: string[] = [];
     const receivedPayloads2: string[] = [];
     const receivedPayloads3: string[] = [];
@@ -96,142 +100,145 @@ test('Signal should support multiple listener per tag', (t) => {
     signal.remove(tag2);
     signal.dispatch('c');
 
-    t.deepEqual(receivedPayloads1, ['a']);
-    t.deepEqual(receivedPayloads2, ['a']);
-    t.deepEqual(receivedPayloads3, ['a', 'b']);
-
-    t.end();
+    assertEquals(receivedPayloads1, ['a']);
+    assertEquals(receivedPayloads2, ['a']);
+    assertEquals(receivedPayloads3, ['a', 'b']);
 });
 
-test('Signal after removing a listener by tag the tag no longer apply', (t) => {
-    const receivedPayloads: string[] = [];
+test(
+    'Signal after removing a listener by tag the tag no longer apply',
+    () => {
+        const receivedPayloads: string[] = [];
 
-    const signal = new Signal<string>();
+        const signal = new Signal<string>();
 
-    const tag1 = {};
-    const tag2 = {};
+        const tag1 = {};
+        const tag2 = {};
 
-    const listener = (payload: string) => receivedPayloads.push(payload);
+        const listener = (payload: string) => receivedPayloads.push(payload);
 
-    signal.add(listener, tag1, tag2);
+        signal.add(listener, tag1, tag2);
 
-    signal.dispatch('a');
-    signal.remove(tag1);
-    signal.dispatch('b');
-    signal.add(listener);
-    signal.remove(tag1);
-    signal.remove(tag2);
-    signal.dispatch('c');
+        signal.dispatch('a');
+        signal.remove(tag1);
+        signal.dispatch('b');
+        signal.add(listener);
+        signal.remove(tag1);
+        signal.remove(tag2);
+        signal.dispatch('c');
 
-    t.deepEqual(receivedPayloads, ['a', 'c']);
+        assertEquals(receivedPayloads, ['a', 'c']);
+    },
+);
 
-    t.end();
-});
+test(
+    'Signal after removing a listener by listener the tag no longer applies',
+    () => {
+        const receivedPayloads: string[] = [];
 
-test('Signal after removing a listener by listener the tag no longer applies', (t) => {
-    const receivedPayloads: string[] = [];
+        const signal = new Signal<string>();
 
-    const signal = new Signal<string>();
+        const tag1 = {};
+        const tag2 = {};
 
-    const tag1 = {};
-    const tag2 = {};
+        const listener = (payload: string) => receivedPayloads.push(payload);
 
-    const listener = (payload: string) => receivedPayloads.push(payload);
+        signal.add(listener, tag1, tag2);
 
-    signal.add(listener, tag1, tag2);
+        signal.dispatch('a');
+        signal.remove(listener);
+        signal.dispatch('b');
+        signal.add(listener);
+        signal.remove(tag1);
+        signal.remove(tag2);
+        signal.dispatch('c');
 
-    signal.dispatch('a');
-    signal.remove(listener);
-    signal.dispatch('b');
-    signal.add(listener);
-    signal.remove(tag1);
-    signal.remove(tag2);
-    signal.dispatch('c');
+        assertEquals(receivedPayloads, ['a', 'c']);
+    },
+);
 
-    t.deepEqual(receivedPayloads, ['a', 'c']);
+test(
+    'Signal after removing a tag the tag should no longer apply to multiple listeners',
+    () => {
+        const receivedPayloads1: string[] = [];
+        const receivedPayloads2: string[] = [];
 
-    t.end();
-});
+        const signal = new Signal<string>();
 
-test('Signal after removing a tag the tag should no longer apply to multiple listeners', (t) => {
-    const receivedPayloads1: string[] = [];
-    const receivedPayloads2: string[] = [];
+        const tag = {};
 
-    const signal = new Signal<string>();
+        const listener1 = (payload: string) => receivedPayloads1.push(payload);
+        const listener2 = (payload: string) => receivedPayloads2.push(payload);
 
-    const tag = {};
+        signal.add(listener1, tag);
+        signal.add(listener2, tag);
 
-    const listener1 = (payload: string) => receivedPayloads1.push(payload);
-    const listener2 = (payload: string) => receivedPayloads2.push(payload);
+        signal.dispatch('a');
+        signal.remove(tag);
+        signal.dispatch('b');
+        signal.add(listener1);
+        signal.add(listener2);
+        signal.remove(tag);
+        signal.dispatch('c');
 
-    signal.add(listener1, tag);
-    signal.add(listener2, tag);
+        assertEquals(receivedPayloads1, ['a', 'c']);
+        assertEquals(receivedPayloads2, ['a', 'c']);
+    },
+);
 
-    signal.dispatch('a');
-    signal.remove(tag);
-    signal.dispatch('b');
-    signal.add(listener1);
-    signal.add(listener2);
-    signal.remove(tag);
-    signal.dispatch('c');
+test(
+    'Signal removing a tagged listener should not affect other listeners with the same tag',
+    () => {
+        const receivedPayloads1: string[] = [];
+        const receivedPayloads2: string[] = [];
 
-    t.deepEqual(receivedPayloads1, ['a', 'c']);
-    t.deepEqual(receivedPayloads2, ['a', 'c']);
+        const signal = new Signal<string>();
 
-    t.end();
-});
+        const tag = {};
 
-test('Signal removing a tagged listener should not affect other listeners with the same tag', (t) => {
-    const receivedPayloads1: string[] = [];
-    const receivedPayloads2: string[] = [];
+        const listener1 = (payload: string) => receivedPayloads1.push(payload);
+        const listener2 = (payload: string) => receivedPayloads2.push(payload);
 
-    const signal = new Signal<string>();
+        signal.add(listener1, tag);
+        signal.add(listener2, tag);
 
-    const tag = {};
+        signal.dispatch('a');
+        signal.remove(listener1);
+        signal.dispatch('b');
+        signal.add(listener1);
+        signal.remove(tag);
+        signal.dispatch('c');
 
-    const listener1 = (payload: string) => receivedPayloads1.push(payload);
-    const listener2 = (payload: string) => receivedPayloads2.push(payload);
+        assertEquals(receivedPayloads1, ['a', 'c']);
+        assertEquals(receivedPayloads2, ['a', 'b']);
+    },
+);
 
-    signal.add(listener1, tag);
-    signal.add(listener2, tag);
+test(
+    'Signal listener should be able to add again with the same tag',
+    () => {
+        const receivedPayloads1: string[] = [];
+        const receivedPayloads2: string[] = [];
 
-    signal.dispatch('a');
-    signal.remove(listener1);
-    signal.dispatch('b');
-    signal.add(listener1);
-    signal.remove(tag);
-    signal.dispatch('c');
+        const signal = new Signal<string>();
 
-    t.deepEqual(receivedPayloads1, ['a', 'c']);
-    t.deepEqual(receivedPayloads2, ['a', 'b']);
+        const tag = {};
 
-    t.end();
-});
+        const listener1 = (payload: string) => receivedPayloads1.push(payload);
+        const listener2 = (payload: string) => receivedPayloads2.push(payload);
 
-test('Signal listener should be able to add again with the same tag', (t) => {
-    const receivedPayloads1: string[] = [];
-    const receivedPayloads2: string[] = [];
+        signal.add(listener1, tag);
+        signal.add(listener2, tag);
+        signal.dispatch('a');
+        signal.remove(tag);
+        signal.dispatch('b');
+        signal.add(listener1, tag);
+        signal.add(listener2, tag);
+        signal.dispatch('c');
+        signal.remove(tag);
+        signal.dispatch('d');
 
-    const signal = new Signal<string>();
-
-    const tag = {};
-
-    const listener1 = (payload: string) => receivedPayloads1.push(payload);
-    const listener2 = (payload: string) => receivedPayloads2.push(payload);
-
-    signal.add(listener1, tag);
-    signal.add(listener2, tag);
-    signal.dispatch('a');
-    signal.remove(tag);
-    signal.dispatch('b');
-    signal.add(listener1, tag);
-    signal.add(listener2, tag);
-    signal.dispatch('c');
-    signal.remove(tag);
-    signal.dispatch('d');
-
-    t.deepEqual(receivedPayloads1, ['a', 'c']);
-    t.deepEqual(receivedPayloads2, ['a', 'c']);
-
-    t.end();
-});
+        assertEquals(receivedPayloads1, ['a', 'c']);
+        assertEquals(receivedPayloads2, ['a', 'c']);
+    },
+);

@@ -1,58 +1,43 @@
 {
-  "name": "@goto/micro-signals",
-  "version": "2.11.1",
-  "description": "A tiny typed messaging system inspired by js-signals that uses ES2015 sets",
-  "main": "lib/src/index.js",
-  "module": "lib/src/index.js",
-  "exports": {
-    ".": "./lib/src/index.js"
-  },
-  "types": "lib/src/index.d.ts",
-  "type": "module",
-  "devDependencies": {
-    "@small-tech/esm-tape-runner": "2.0.0",
-    "@tsconfig/strictest": "2.0.3",
-    "@types/node": "20.11.24",
-    "@types/tape": "5.6.4",
-    "@typescript-eslint/eslint-plugin": "7.1.0",
-    "@typescript-eslint/parser": "7.1.0",
-    "c8": "9.1.0",
-    "eslint": "8.57.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-html": "8.0.0",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-mocha": "10.3.0",
-    "eslint-plugin-prettier": "5.1.3",
-    "eslint-plugin-react": "7.33.2",
-    "eslint-plugin-simple-import-sort": "12.0.0",
-    "nyc": "15.1.0",
-    "prettier": "3.2.5",
-    "rimraf": "5.0.5",
-    "tap-spec": "5.0.0",
-    "tape": "5.7.5",
-    "typescript": "5.3.3"
-  },
-  "scripts": {
-    "lint": "eslint --ext .ts,.tsx --cache ./src",
-    "test": "yarn build && c8 esm-tape-runner 'lib/test/*.spec.js' | tap-spec",
-    "clean": "rimraf lib",
-    "build": "tsc --project tsconfig.json"
-  },
-  "keywords": [
-    "signals",
-    "signal",
-    "TypeScript",
-    "ts",
-    "typed",
-    "eventer",
-    "events",
-    "event",
-    "messaging",
-    "pubsub"
-  ],
-  "license": "MIT",
-  "authors": [
-    "Leland Miller <lelandmiller@gmail.com>",
-    "Justin Maher <justin.m.maher@gmail.com>"
-  ]
+    "name": "@hoodie/signals",
+    "version": "2.11.1",
+    "description": "A tiny typed messaging system inspired by js-signals that uses ES2015 sets",
+    "main": "lib/src/index.js",
+    "module": "lib/src/index.js",
+    "exports": {
+        ".": "./lib/src/index.js"
+    },
+    "types": "lib/src/index.d.ts",
+    "type": "module",
+    "devDependencies": {
+        "@tsconfig/strictest": "2.0.3",
+        "@types/node": "20.11.24",
+
+        "typescript": "^7.0.2"
+    },
+    "scripts": {
+        "lint": "deno fmt --check && deno lint",
+        "fmt": "deno fmt",
+        "test": "deno task test",
+        "test:node": "tsc --project tsconfig.json && node --test lib/test/*.spec.js",
+        "build": "tsc --project tsconfig.json"
+    },
+    "keywords": [
+        "signals",
+        "signal",
+        "TypeScript",
+        "ts",
+        "typed",
+        "eventer",
+        "events",
+        "event",
+        "messaging",
+        "pubsub"
+    ],
+    "license": "MIT",
+    "authors": [
+        "Leland Miller <lelandmiller@gmail.com>",
+        "Justin Maher <justin.m.maher@gmail.com>",
+        "Hendrik Sollich <hendrik@hoodie.de>"
+    ]
 }

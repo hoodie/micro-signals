@@ -1,9 +1,9 @@
-import { ExtendedSignal } from './extended-signal.js';
-import { ReadableSignal } from './index.js';
-import { Listener, WritableSignal } from './interfaces.js';
+import { ExtendedSignal } from './extended-signal.ts';
+import { ReadableSignal } from './index.ts';
+import { Listener, WritableSignal } from './interfaces.ts';
 
 export class Signal<T> extends ExtendedSignal<T> implements WritableSignal<T>, ReadableSignal<T> {
-    protected _listeners = new Set<Listener<T>>();
+    protected _listeners: Set<Listener<T>> = new Set<Listener<T>>();
 
     public static setDefaultListener(listener: Listener<any>) {
         Signal._staticDefaultListener = listener;

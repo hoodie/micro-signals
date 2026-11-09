@@ -1,14 +1,14 @@
-import test from 'tape';
+import test from '../lib/test.ts';
 
-import { ReadableSignal, Signal } from '../../src/index.js';
-import { LeakDetectionSignal } from '../lib/leak-detection-signal.js';
+import { ReadableSignal, Signal } from '../../src/index.ts';
+import { LeakDetectionSignal } from '../lib/leak-detection-signal.ts';
 
 export type CreateDerivedSignal = <T>(baseSignal: ReadableSignal<T>) => ReadableSignal<T>;
 
 export function derivedSuite(prefix: string, createDerivedSignal: CreateDerivedSignal) {
     test(`${prefix} listeners should be called only once when using add`, (t) => {
         const signal = new LeakDetectionSignal<void>();
-        const derivedSignal = createDerivedSignal(signal);
+        const derivedSignal = createDerivedSignal(signal as any);
         let callCount = 0;
 
         const listener = () => callCount++;
@@ -19,7 +19,7 @@ export function derivedSuite(prefix: string, createDerivedSignal: CreateDerivedS
         t.equal(
             signal.listenerCount,
             1,
-            `add same listener again is a no-op ${signal.listenerCount}`
+            `add same listener again is a no-op ${signal.listenerCount}`,
         );
 
         signal.dispatch(undefined);

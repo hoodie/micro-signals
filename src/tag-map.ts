@@ -1,4 +1,4 @@
-import type { Listener } from './interfaces.js';
+import type { Listener } from './interfaces.ts';
 
 export class TagMap<T> {
     private readonly _tagToListeners = new WeakMap<any, Set<Listener<T>>>();

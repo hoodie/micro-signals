@@ -1,4 +1,4 @@
-import { CollectionCache, ValueCache } from './caches.js';
+import { CollectionCache, ValueCache } from './caches.ts';
 
 export type Listener<T> = (payload: T) => void;
 
@@ -216,5 +216,6 @@ export type Accumulator<T, U> = (accumulator: U, current: T) => any;
 
 export type PayloadOf<S extends BaseSignal<any>> = S extends BaseSignal<infer T> ? T : never;
 
-export type ReadOnlyVersionOf<S extends BaseSignal<any>> =
-    S extends BaseSignal<infer T> ? ReadableSignal<T> : never;
+export type ReadOnlyVersionOf<S extends BaseSignal<any>> = S extends BaseSignal<infer T>
+    ? ReadableSignal<T>
+    : never;

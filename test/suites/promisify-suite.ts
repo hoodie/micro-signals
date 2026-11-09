@@ -1,11 +1,11 @@
-import test from 'tape';
+import test from '../lib/test.ts';
 
-import { errorSignal, ReadableSignal, Signal, timeoutSignal } from '../../src/index.js';
-import { LeakDetectionSignal } from '../lib/leak-detection-signal.js';
+import { errorSignal, ReadableSignal, Signal, timeoutSignal } from '../../src/index.ts';
+import { LeakDetectionSignal } from '../lib/leak-detection-signal.ts';
 
 export type PromisifyFunction = <T>(
     resolveSignal: ReadableSignal<T>,
-    rejectSignal?: ReadableSignal<any>
+    rejectSignal?: ReadableSignal<any>,
 ) => Promise<T>;
 
 export function promisifySuite(prefix: string, promisifyFunction: PromisifyFunction) {
@@ -56,7 +56,7 @@ export function promisifySuite(prefix: string, promisifyFunction: PromisifyFunct
 
         promisifyFunction<string>(
             resolveSignal,
-            errorSignal(500, () => new Error('timeout'))
+            errorSignal(500, () => new Error('timeout')),
         ).catch((reason: Error) => {
             t.equal(reason.message, 'timeout');
             t.end();

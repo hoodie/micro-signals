@@ -1,6 +1,6 @@
-import test from 'tape';
+import test from '../lib/test.ts';
 
-import { BaseSignal, ReadableSignal, WritableSignal } from '../../src/index.js';
+import { BaseSignal, ReadableSignal, WritableSignal } from '../../src/index.ts';
 
 export interface SignalSet {
     parentSignal: ReadableSignal<any> & WritableSignal<any>;
@@ -10,7 +10,7 @@ export interface SignalSet {
 export type UniqueListenerSetup = () => SignalSet;
 
 function setupListeners(
-    setup: UniqueListenerSetup
+    setup: UniqueListenerSetup,
 ): SignalSet & { payloads: number[]; listener: (payload: number) => void } {
     const { parentSignal, childSignal } = setup();
 
@@ -26,7 +26,7 @@ function setupListeners(
 
 function setupTaggedListeners(
     tag: any,
-    setup: UniqueListenerSetup
+    setup: UniqueListenerSetup,
 ): SignalSet & { payloads: number[]; listener: (payload: number) => void } {
     const { parentSignal, childSignal } = setup();
 

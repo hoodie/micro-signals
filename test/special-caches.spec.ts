@@ -1,7 +1,7 @@
-import test from 'tape';
+import test from './lib/test.ts';
 
-import { CapacityCollectionCache, GroupingCache } from '../src/caches.js';
-import { Signal } from '../src/index.js';
+import { CapacityCollectionCache, GroupingCache } from '../src/caches.ts';
+import { Signal } from '../src/index.ts';
 
 test('CapacityCollectionCache drops old payloads that when capacity is reached', (t) => {
     const signal = new Signal();

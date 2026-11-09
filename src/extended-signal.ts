@@ -1,16 +1,15 @@
-import { CollectionCache, ValueCache } from './caches.js';
-import {
+import { type CollectionCache, ValueCache } from './caches.ts';
+import type {
     Accumulator,
     BaseSignal,
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     Cache,
     CachedSignal,
     Listener,
     ReadableSignal,
     WritableSignal,
-} from './interfaces.js';
-import { Signal } from './signal.js';
-import { TagMap } from './tag-map.js';
+} from './interfaces.ts';
+import { Signal } from './signal.ts';
+import { TagMap } from './tag-map.ts';
 
 const FreshMarker = Symbol('so fresh');
 type FreshListener<T> = Listener<T> & { fresh: typeof FreshMarker };
@@ -45,7 +44,7 @@ export class ExtendedSignal<T> implements ReadableSignal<T> {
 
     public static promisify<U>(
         resolveSignal: BaseSignal<U>,
-        rejectSignal?: BaseSignal<any>
+        rejectSignal?: BaseSignal<any>,
     ): Promise<U> {
         return new Promise<U>((resolve, reject) => {
             function clearListeners() {
@@ -74,7 +73,7 @@ export class ExtendedSignal<T> implements ReadableSignal<T> {
 
     constructor(
         private readonly _baseSignal: BaseSignal<T>,
-        protected readonly _parentPostClearHooks: Function[] = []
+        protected readonly _parentPostClearHooks: Function[] = [],
     ) {}
 
     public add(listener: Listener<T>, ...tags: any[]): void {
@@ -92,7 +91,7 @@ export class ExtendedSignal<T> implements ReadableSignal<T> {
     }
 
     public chain(
-        child?: ReadableSignal<any> & WritableSignal<any>
+        child?: ReadableSignal<any> & WritableSignal<any>,
     ): ReadableSignal<T> & WritableSignal<T> {
         const newChild = child ?? new Signal<T>();
         this.add((payload) => newChild.dispatch(payload), child);
@@ -232,7 +231,7 @@ type ExtendedSignalConfig<P, T> = {
  * are added to the new signal.
  */
 function convertedListenerSignal<P, T, C extends Cache<T>>(
-    config: ExtendedSignalConfig<P, T>
+    config: ExtendedSignalConfig<P, T>,
 ): CachedSignal<T, C>;
 
 function convertedListenerSignal<P, T>(config: ExtendedSignalConfig<P, T>): ReadableSignal<T>;
@@ -266,6 +265,6 @@ function convertedListenerSignal<P, T>(config: ExtendedSignalConfig<P, T>): Read
                 return baseSignal.remove(newListener);
             },
         },
-        postClearHooks
+        postClearHooks,
     );
 }

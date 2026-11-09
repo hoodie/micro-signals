@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-shadow
-import { Cache } from './interfaces.js';
+import type { Cache } from './interfaces.ts';
 
 export abstract class ArrayCache<T> implements Cache<T> {
     protected _payloads: T[] = [];
@@ -77,7 +76,7 @@ export class GroupingCache<T, G> implements Cache<T> {
     public readonly kind = 'groupingCache';
 
     public static byProperty<T>(
-        groupPredicate: (payload: T) => T[keyof T]
+        groupPredicate: (payload: T) => T[keyof T],
     ): GroupingCache<T, T[keyof T]> {
         return new GroupingCache(groupPredicate);
     }

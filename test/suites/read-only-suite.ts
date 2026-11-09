@@ -1,17 +1,17 @@
-import test from 'tape';
+import test from '../lib/test.ts';
 
-import { PayloadOf, ReadableSignal, ReadOnlyVersionOf, Signal } from '../../src/index.js';
-import { LeakDetectionSignal } from '../lib/leak-detection-signal.js';
+import { PayloadOf, ReadableSignal, ReadOnlyVersionOf, Signal } from '../../src/index.ts';
+import { LeakDetectionSignal } from '../lib/leak-detection-signal.ts';
 
-import { parentChildSuite } from './parent-child-suite.js';
+import { parentChildSuite } from './parent-child-suite.ts';
 
 export type ReadOnlySignalCreationFunction = <T>(
-    baseSignal: ReadableSignal<T>
+    baseSignal: ReadableSignal<T>,
 ) => ReadableSignal<T>;
 
 export function readOnlySuite(
     prefix: string,
-    createReadOnlySignal: ReadOnlySignalCreationFunction
+    createReadOnlySignal: ReadOnlySignalCreationFunction,
 ) {
     parentChildSuite(prefix, () => {
         const parentSignal = new Signal();

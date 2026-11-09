@@ -1,16 +1,16 @@
-import test from 'tape';
+import test from './lib/test.ts';
 
-import { ReadableSignal, Signal } from '../src/index.js';
+import { ReadableSignal, Signal } from '../src/index.ts';
 
-import { LeakDetectionSignal } from './lib/leak-detection-signal.js';
-import { derivedSuite } from './suites/derived-suite.js';
-import { filteredSuite } from './suites/filtered-suite.js';
-import { mappedSuite } from './suites/mapped-suite.js';
-import { mergedSuite } from './suites/merged-suite.js';
-import { peekedSuite } from './suites/peeked-suite.js';
-import { promisifySuite } from './suites/promisify-suite.js';
-import { readOnlySuite } from './suites/read-only-suite.js';
-import { reducedSuite } from './suites/reduced-suite.js';
+import { LeakDetectionSignal } from './lib/leak-detection-signal.ts';
+import { derivedSuite } from './suites/derived-suite.ts';
+import { filteredSuite } from './suites/filtered-suite.ts';
+import { mappedSuite } from './suites/mapped-suite.ts';
+import { mergedSuite } from './suites/merged-suite.ts';
+import { peekedSuite } from './suites/peeked-suite.ts';
+import { promisifySuite } from './suites/promisify-suite.ts';
+import { readOnlySuite } from './suites/read-only-suite.ts';
+import { reducedSuite } from './suites/reduced-suite.ts';
 
 // TODO run the signal suite on the converted signals as well?
 
@@ -28,18 +28,21 @@ mergedSuite('Signal#merge', (baseSignal, ...signals) => baseSignal.merge(...sign
 
 mergedSuite('Signal.merge', (baseSignal, ...signals) => Signal.merge(baseSignal, ...signals));
 
-promisifySuite('Signal#promisify', (resolveSignal, rejectSignal?) =>
-    resolveSignal.promisify(rejectSignal)
+promisifySuite(
+    'Signal#promisify',
+    (resolveSignal, rejectSignal?) => resolveSignal.promisify(rejectSignal),
 );
 
-promisifySuite('Signal.promisify', (resolveSignal, rejectSignal?) =>
-    Signal.promisify(resolveSignal, rejectSignal)
+promisifySuite(
+    'Signal.promisify',
+    (resolveSignal, rejectSignal?) => Signal.promisify(resolveSignal, rejectSignal),
 );
 
 readOnlySuite('Signal#readOnly', (signal) => signal.readOnly());
 
-reducedSuite('Signal#reduce', (baseSignal, accumulator, initialValue) =>
-    baseSignal.reduce(accumulator, initialValue)
+reducedSuite(
+    'Signal#reduce',
+    (baseSignal, accumulator, initialValue) => baseSignal.reduce(accumulator, initialValue),
 );
 
 peekedSuite('Signal#peek', (baseSignal, peeker) => baseSignal.peek(peeker));
